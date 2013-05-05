@@ -212,13 +212,11 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
                     String id = "na";
                 	for(int i = 0; i < whouse.getBplants().length; i++)
                 	{
-                		if(whouse.getBplants()[i].getRobot().getOrder().getOrderId() == map.getOrderId())
+                		if((whouse.getBplants()[i].getRobot().getOrder() != null)&& (whouse.getBplants()[i].getRobot().getOrder().getOrderId() == map.getOrderId()))
                 		{
                 			id = String.valueOf(whouse.getBplants()[i].getRobot().id());
                 		}
                 	}
-                	
-                	
                 	//System.out.println(entry.getKey().id() + "#####"+ entry.getValue().toString());
                     output += String.format("%8s%16s%16s%16s%16s" , map.getOrderId() , entry.getKey().id() , entry.getKey().size() , entry.getValue().toString(), id);
                     output += "\n";
@@ -240,7 +238,7 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
         {
             textFenster.refresh(rob.id(), rob.getCurrentPosX(),
                     rob.getCurrentPosY(), xZiel, yZiel,
-                    "na","na","na",  output);
+                    "","","",  output);
 
         }
         for (Item elem : item) {
