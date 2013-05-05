@@ -78,8 +78,9 @@ public class textFenster extends JFrame implements textFenster_interface  {
             gridPane.add(zeile[y][5]);	
 
             }
-        pendingOrders = new JTextArea("OrderId       ItemId      Gewicht       Menge     Robot\n",10,50);
+        pendingOrders = new JTextArea("OrderId   ItemId   Gewicht   Menge   Robot\n",10,50);
         pendingOrders.setForeground(Color.BLUE);
+        pendingOrders.setFont(new Font(Font.MONOSPACED, 0, 12));
         StatusPane.add(pendingOrders);
         StatusPane.setLayout(new FlowLayout());
         hauptpane.add(StatusPane, BorderLayout.SOUTH );
