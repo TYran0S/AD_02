@@ -43,9 +43,9 @@ public class Item implements Comparable<Item> {
      */
     public static List<Item> factory() {
 
-    int temp_N = (Simulation.TEST) ? JUnitTestframe.N : Simulation.N;																	
-    int temp_NUMBOXINGPLANTS = (Simulation.TEST) ? JUnitTestframe.NUMBOXINGPLANTS : Simulation.NUMBOXINGPLANTS;
-      int temp_ORDERMAXSIZE = (Simulation.TEST) ? JUnitTestframe.ORDERMAXSIZE : Simulation.ORDERMAXSIZE;
+    int temp_N =  Simulation.N;																	
+    int temp_NUMBOXINGPLANTS = Simulation.NUMBOXINGPLANTS;
+      int temp_ORDERMAXSIZE = Simulation.ORDERMAXSIZE;
         
      /*  tmp_N = N 
          temp_NUMBOXINGPLANTS = NUMBOXINGPLANTS

@@ -17,8 +17,8 @@ public class WarehouseImpl implements Warehouse {
     }
 
     public WarehouseImpl(List<Item> itemList) {
-        int temp_N = (Simulation.TEST) ? JUnitTestframe.N : Simulation.N;
-        int temp_NUMBOXINGPLANTS = (Simulation.TEST) ? JUnitTestframe.NUMBOXINGPLANTS : Simulation.NUMBOXINGPLANTS;
+        int temp_N = Simulation.N;
+        int temp_NUMBOXINGPLANTS = Simulation.NUMBOXINGPLANTS;
 
         warehouse = new Field[temp_N][temp_N];
         orderQueue = new LinkedList<>();
@@ -27,7 +27,7 @@ public class WarehouseImpl implements Warehouse {
 
         // Alle vorgesehene Fields mit StorageAreaImpl initialisieren und Items zuweisen
         for(Item i : itemList) {
-            warehouse[i.productPosY()][i.productPosX()] = new StorageAreaImpl(i);
+            warehouse[i.productPosY()][i.productPosX()] = new FieldImpl(i);
         }
 
         // Alle vorgesehene Fields mit BoxingPlantImpl initialisieren und RobotImpl zuweisen
@@ -134,7 +134,7 @@ public class WarehouseImpl implements Warehouse {
     }
 
     String toStringMini() {
-        int temp_N = (Simulation.TEST) ? JUnitTestframe.N : Simulation.N;
+        int temp_N = Simulation.N;
 
         StringBuilder ret = new StringBuilder();
 
@@ -227,7 +227,7 @@ public class WarehouseImpl implements Warehouse {
 
     @Override
     public String toString() {
-        int tmp = (Simulation.TEST) ? JUnitTestframe.N : Simulation.N;
+        int tmp = Simulation.N;
 
         if (tmp >= 10) {
             return toStringMaxi();

@@ -36,7 +36,7 @@ public class textFenster extends JFrame implements textFenster_interface  {
         setTitle("Robot Uebersicht");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(700, 200);
-        setMinimumSize(new Dimension(300, 300));
+        setMinimumSize(new Dimension(600, 300));
         setMaximumSize(screen);
 
         hauptpane = new JPanel();
@@ -56,9 +56,9 @@ public class textFenster extends JFrame implements textFenster_interface  {
         ueberschriftPane.add(new JLabel("Robot:"));
         ueberschriftPane.add(new JLabel("Position:"));
         ueberschriftPane.add(new JLabel("Ziel"));
-        ueberschriftPane.add(new JLabel("OrderId"));
-        ueberschriftPane.add(new JLabel("menge"));
-        ueberschriftPane.add(new JLabel("gewicht"));
+        ueberschriftPane.add(new JLabel("Item"));
+        ueberschriftPane.add(new JLabel("Menge"));
+        ueberschriftPane.add(new JLabel("Gewicht/Item"));
 
         // Zeilen durchnummerieren
         zeile = new JLabel[robots+1][6];
@@ -78,11 +78,11 @@ public class textFenster extends JFrame implements textFenster_interface  {
             gridPane.add(zeile[y][5]);	
 
             }
-        pendingOrders = new JTextArea("String",10,26);
+        pendingOrders = new JTextArea("OrderId       ItemId      Gewicht       Menge     Robot\n",10,50);
         pendingOrders.setForeground(Color.BLUE);
         StatusPane.add(pendingOrders);
         StatusPane.setLayout(new FlowLayout());
-        hauptpane.add(StatusPane, BorderLayout.PAGE_END );
+        hauptpane.add(StatusPane, BorderLayout.SOUTH );
         //hauptpane.add(scrollPane, BorderLayout.SOUTH);
         //pack();
         setVisible(true);
@@ -103,8 +103,8 @@ public class textFenster extends JFrame implements textFenster_interface  {
             zeile[robot][1].setText("X:"+xPos + " Y:" + yPos);		// Position aktualisieren
             zeile[robot][2].setText("X:"+xZiel + " Y:" + yZiel);	// Ziel aktualisieren
             zeile[robot][3].setText(orderId);
-            zeile[robot][4].setText(gewicht);
-            zeile[robot][5].setText(menge);
+            zeile[robot][4].setText(menge);
+            zeile[robot][5].setText(gewicht);
             pendingOrders.setText(status);
 
             //		if (ladung == null) {		

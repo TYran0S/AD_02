@@ -14,8 +14,8 @@ public class BoxingPlantImpl implements BoxingPlant {
     private Order order;
     private boolean busy;
     private int packingTime;
-    private final int temp_PPTIME = (Simulation.TEST) ? JUnitTestframe.PPTIME : Simulation.PPTIME;
-    private final int temp_CLTIME = (Simulation.TEST) ? JUnitTestframe.CLTIME : Simulation.CLTIME;
+    private final int temp_PPTIME =  Simulation.PPTIME;
+    private final int temp_CLTIME =  Simulation.CLTIME;
     private int temp_CLTIME_cnt = temp_CLTIME;
     private DecimalFormat df = new DecimalFormat("00");
     private Status status;
