@@ -203,7 +203,7 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
     public void showRobotState( final Warehouse whouse, final Robot rob, final Set<Item> item, 
             final int loadTime, final int xZiel, final int yZiel, final int packingTime ) {
         String output = new String();
-        output = "OrderId       ItemId      Gewicht       Menge     Robot\n";
+        output = "OrderId   ItemId   Gewicht   Menge   Robot\n";
         //�bersicht aktualisieren
         if (!whouse.getOrder().isEmpty()) {
             //System.out.println("-----------------------Auftraege-------------------");
@@ -212,13 +212,13 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
                     String id = "na";
                 	for(int i = 0; i < whouse.getBplants().length; i++)
                 	{
-                		if((whouse.getBplants()[i].getRobot().getOrder() != null)&& (whouse.getBplants()[i].getRobot().getOrder().getOrderId() == map.getOrderId()))
+                		if((whouse.getBplants()[i].getRobot().getOrder() != null) && (whouse.getBplants()[i].getRobot().getOrder().getOrderId() == map.getOrderId()))
                 		{
                 			id = String.valueOf(whouse.getBplants()[i].getRobot().id());
                 		}
                 	}
                 	//System.out.println(entry.getKey().id() + "#####"+ entry.getValue().toString());
-                    output += String.format("%8s%16s%16s%16s%16s" , map.getOrderId() , entry.getKey().id() , entry.getKey().size() , entry.getValue().toString(), id);
+                    output += String.format("%4s %8s %8s %8s %8s" , map.getOrderId() , entry.getKey().id() , entry.getKey().size() , entry.getValue().toString(), id);
                     output += "\n";
                 }
             }
