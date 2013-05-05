@@ -50,7 +50,7 @@ public class Order {
      */
  
     public static Map<Item, Integer> factory(List<Item> items) {
-        int temp_ORDERMAXSIZE = (Simulation.TEST) ? JUnitTestframe.ORDERMAXSIZE : Simulation.ORDERMAXSIZE;
+        int temp_ORDERMAXSIZE = Simulation.ORDERMAXSIZE;
 
         Map<Item, Integer> orderMap = new TreeMap<>();
         boolean orderComplete = false;

@@ -203,19 +203,29 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
     public void showRobotState( final Warehouse whouse, final Robot rob, final Set<Item> item, 
             final int loadTime, final int xZiel, final int yZiel, final int packingTime ) {
         String output = new String();
-        output = "OrderId       ItemId      Gewicht       Menge\n";
+        output = "OrderId       ItemId      Gewicht       Menge     Robot\n";
         //�bersicht aktualisieren
-
         if (!whouse.getOrder().isEmpty()) {
             //System.out.println("-----------------------Auftraege-------------------");
             for ( Order map : whouse.getOrder()  ) {
                 for (Entry<Item, Integer> entry : map.getMap().entrySet()) {
-                    //System.out.println(entry.getKey().id() + "#####"+ entry.getValue().toString());
-                    output += String.format("%8s%16s%16s%16s" , map.getOrderId() , entry.getKey().id() , entry.getKey().size() , entry.getValue().toString());
+                    String id = "na";
+                	for(int i = 0; i < whouse.getBplants().length; i++)
+                	{
+                		if(whouse.getBplants()[i].getRobot().getOrder().getOrderId() == map.getOrderId())
+                		{
+                			id = String.valueOf(whouse.getBplants()[i].getRobot().id());
+                		}
+                	}
+                	
+                	
+                	//System.out.println(entry.getKey().id() + "#####"+ entry.getValue().toString());
+                    output += String.format("%8s%16s%16s%16s%16s" , map.getOrderId() , entry.getKey().id() , entry.getKey().size() , entry.getValue().toString(), id);
                     output += "\n";
                 }
             }
         }
+
         //System.out.println("-----------------------End Auftraege-------------------");
         if(rob.getOrder() != null) if (!rob.getOrder().getMap().keySet().isEmpty()) {
 
@@ -236,11 +246,10 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
         for (Item elem : item) {
             feld[elem.productPosX()][elem.productPosY()].setText(String.valueOf(elem.id()));
         }
+        
         // Anzeige aktualisieren
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-
-
                 // Alte Position l�schen
                 if (RobotPosY[rob.id()] != fields-1) {
                     feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setIcon(null);
@@ -290,6 +299,7 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
 
             }
         });
+        
         //pack();
 
     }
