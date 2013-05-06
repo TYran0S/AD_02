@@ -1,15 +1,14 @@
 package model;
 
 import java.text.DecimalFormat;
-import java.util.*;
 import java.util.Map.Entry;
 
 public class BoxingPlantImpl implements BoxingPlant {
     private int amountOfRobots;
-    private int coordinateX;
-    private int coordinateY;
+    private final int coordinateX;
+    private final int coordinateY;
     private final int ID;
-    private Robot assignedrobot;
+    private final Robot assignedrobot;
     private Robot robotOnField;
     private Order order;
     private boolean busy;
@@ -17,8 +16,10 @@ public class BoxingPlantImpl implements BoxingPlant {
     private final int temp_PPTIME =  Simulation.PPTIME;
     private final int temp_CLTIME =  Simulation.CLTIME;
     private int temp_CLTIME_cnt = temp_CLTIME;
-    private DecimalFormat df = new DecimalFormat("00");
-    private Status status;
+    private int loadtime = 0;
+    private char lastAction;
+    private final DecimalFormat df = new DecimalFormat("00");
+    private final Status status;
 
     public BoxingPlantImpl(int id, int x, int y, Robot bot) {
         assignedrobot = bot;
@@ -72,11 +73,8 @@ public class BoxingPlantImpl implements BoxingPlant {
       
         // Gesamtgewicht merken
         for (Entry<Item, Integer> element : order.getMap().entrySet()) {
-            packingTime += element.getValue();
+            packingTime += (element.getValue() * element.getKey().size());
         }
-
-        // Reale Packzeit berechnen
-        packingTime *= temp_PPTIME;
 
         // Zustand von busy auf true setzen
         busy = true;
@@ -135,10 +133,6 @@ public class BoxingPlantImpl implements BoxingPlant {
         return assignedrobot;
     }
 
-    public int getAmountOfRobots() {
-        return amountOfRobots;
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -151,5 +145,9 @@ public class BoxingPlantImpl implements BoxingPlant {
     public int getPackingTime()
     {
     	return this.packingTime;
+    }
+
+    public int getLoadTime() {
+        return assignedrobot.getItemLoadTime();
     }
 }

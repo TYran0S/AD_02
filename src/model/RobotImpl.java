@@ -14,6 +14,7 @@ public class RobotImpl implements Robot {
     private final Status status;
     private final Field[][] field;
     private int blockCounter = 0;
+    private int loadedTime;
 
     private int[] target;
 
@@ -39,8 +40,8 @@ public class RobotImpl implements Robot {
      * Bewegt den Robot zum naechsten Ziel und wenn die Order leer ist zu seiner
      * BoxingPlant zurueck.
      */
-    public void action() {
-        char direction = 0;
+    public char action() {
+        char direction;
         if (order != null) {
 
                 this.target = destination();
@@ -51,7 +52,7 @@ public class RobotImpl implements Robot {
             this.target = destination();
 
             //asd
-            direction = findWayAlternative(this.target[0], this.target[1]);
+            direction = findWay(this.target[0], this.target[1]);
 
             // Bewegung zum naechsten Feld
             switch (direction) {
@@ -69,9 +70,13 @@ public class RobotImpl implements Robot {
                 break;
             case 'A':
                 if (order != null && !order.isEmpty()) {
-                    System.out.println("Robot [" + df.format(this.id()) + "]: Lade Item bei Y: " + df.format(currentPosY) + " X: " + df.format(currentPosX));
-                    remove(); // Eintrag entfernen, nachdem der Robot angekommen
-                              // ist
+                    if (getItemLoadTime() > 0) {
+                        loadedTime++;
+                        System.out.println("Robot [" + df.format(this.id()) + "]: Lade Item bei Y: " + df.format(currentPosY) + " X: " + df.format(currentPosX) + " Timeleft: " + df.format(getItemLoadTime()));
+                    } else {
+                        remove(); // Eintrag entfernen, nachdem der Robot angekommen
+                                  // ist
+                    }
                 } else {
                     busy = false;
                 }
@@ -79,7 +84,9 @@ public class RobotImpl implements Robot {
             default:
                 break;
             }
+            return direction;
         }
+        return 'F';
     }
 
     /**
@@ -316,6 +323,21 @@ public class RobotImpl implements Robot {
     @Override
     public int[] getTarget() {
         return this.target;
+    }
+
+    public int getItemLoadTime() {
+        if(order == null || order.isEmpty()) {
+            return 0;
+        }
+        Entry<Item, Integer> orderEntry = ((TreeMap<Item, Integer>)order.getMap()).firstEntry();
+        Item item = orderEntry.getKey();
+        Integer itemCount = orderEntry.getValue();
+        int loadtime = item.size() * itemCount;
+        if(loadtime - loadedTime > 0) {
+            return loadtime - loadedTime;
+        } else {
+            return 0;
+        }
     }
 
 }

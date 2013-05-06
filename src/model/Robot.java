@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Map;
-
 public interface Robot {
 
     /*
@@ -14,7 +12,7 @@ public interface Robot {
      * 	    	 Setzt busy auf true wenn er eine Order hat und auf false wenn er
      * 	    	 seine Startposition wieder erreicht hat
      */
-    public void action();
+    public char action();
 
     /*
      * Eingabe:  eine Map die Item und Iteger enthalt
@@ -48,4 +46,6 @@ public interface Robot {
     public int[] getTarget();
     
     public String getOrderInfos();
+
+    public int getItemLoadTime();
 }

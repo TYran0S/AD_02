@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 public class Order {
 
-    private Map<Item, Integer> order;
+    private final Map<Item, Integer> order;
     private final String orderId;
     private static int ordercount = 1;
    

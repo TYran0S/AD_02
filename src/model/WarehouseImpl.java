@@ -6,11 +6,11 @@ import java.util.*;
 public class WarehouseImpl implements Warehouse {
     private Field[][] warehouse;
     private Queue<Order> orderQueue;
-    private List<Order> orderCopy = new ArrayList<Order>(); // Liste mit den Orders vom Anfang, dient zur Darstellung im TextFrame
+    private final List<Order> orderCopy = new ArrayList<>(); // Liste mit den Orders vom Anfang, dient zur Darstellung im TextFrame
     private BoxingPlant[] bplants;
     private boolean done;
     private final DecimalFormat df = new DecimalFormat("00");
-    boolean firstcall = true;
+    private boolean firstcall = true;
 
     public WarehouseImpl() {
         new WarehouseImpl(Item.factory());
