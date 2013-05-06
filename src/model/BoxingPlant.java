@@ -1,8 +1,5 @@
 package model;
 
-import java.awt.List;
-import java.util.Map;
-
 public interface BoxingPlant extends Field {
 
     /*
@@ -46,10 +43,11 @@ public interface BoxingPlant extends Field {
 
     //JUnit
     public Robot getRobot();
-    public int getAmountOfRobots();
+
     public Status getStatus();
     public int coordinateX();
     public int coordinateY();
     public int getTemp_CLTIME_cnt();
     public int getPackingTime();
+    public int getLoadTime();
 }

@@ -16,36 +16,30 @@ import model.*;
 
 public class textFenster extends JFrame implements textFenster_interface  {
 
-    int robots;
-    JLabel[][] zeile;
-    JPanel hauptpane;
-    JPanel gridPane;
-    JPanel StatusPane;
-    JPanel robotPane;
+    private final JLabel[][] zeile;
+    private final JPanel hauptpane;
+    private final JPanel gridPane;
     //JTable table;
     //JScrollPane scrollPane;
-    JPanel ueberschriftPane;
-    JTextArea pendingOrders;
-    JScrollPane scrollpane;
-
-    private Dimension screen = new Dimension((int) ((Toolkit
-                    .getDefaultToolkit().getScreenSize().width) * 0.75),
-            (int) ((Toolkit.getDefaultToolkit().getScreenSize().height) * 0.75));
+    private final JPanel ueberschriftPane;
+    private final JTextArea pendingOrders;
 
     public textFenster(int robots) {
-        this.robots = robots;
 
         setTitle("Robot Uebersicht");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(700, 200);
         setMinimumSize(new Dimension(500, 300));
+        Dimension screen = new Dimension((int) ((Toolkit
+                .getDefaultToolkit().getScreenSize().width) * 0.75),
+                (int) ((Toolkit.getDefaultToolkit().getScreenSize().height) * 0.75));
         setMaximumSize(screen);
 
         hauptpane = new JPanel();
         getContentPane().add(hauptpane);
         hauptpane.setLayout(new GridLayout(2,1));
-        robotPane = new JPanel();
-        robotPane.setLayout(new BorderLayout(0,0));
+        JPanel robotPane = new JPanel();
+        robotPane.setLayout(new BorderLayout(0, 0));
         hauptpane.add(robotPane);
         ueberschriftPane = new JPanel();
         ueberschriftPane.setLayout(new GridLayout(1, 6));
@@ -55,7 +49,7 @@ public class textFenster extends JFrame implements textFenster_interface  {
         gridPane.setLayout(new GridLayout(robots,6));
         robotPane.add(gridPane, BorderLayout.CENTER);
 
-        StatusPane = new JPanel();
+        JPanel statusPane = new JPanel();
         
 
         ueberschriftPane.add(new JLabel("Robot:"));
@@ -86,9 +80,9 @@ public class textFenster extends JFrame implements textFenster_interface  {
         pendingOrders = new JTextArea("OrderId   ItemId   Gewicht   Menge   Robot\n",10,68);
         pendingOrders.setForeground(Color.BLUE);
         pendingOrders.setFont(new Font(Font.MONOSPACED, 0, 12));
-        StatusPane.add(pendingOrders);
-        StatusPane.setLayout(new FlowLayout());
-        scrollpane = new JScrollPane(StatusPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        statusPane.add(pendingOrders);
+        statusPane.setLayout(new FlowLayout());
+        JScrollPane scrollpane = new JScrollPane(statusPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         hauptpane.add(scrollpane);
         //hauptpane.add(scrollPane, BorderLayout.SOUTH);
         //pack();

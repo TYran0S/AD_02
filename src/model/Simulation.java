@@ -43,17 +43,16 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
     public static  int ORDERMAXSIZE = 50; //maximale bestellgr��e
     public static  int MAXCAPACITY = ORDERMAXSIZE; //maximale roboter tragekapazit�t
     public static  int NUMROBOTS = NUMBOXINGPLANTS; //Anzahl der robotter
-    public static  int CLTIME = 1; //vermutung irgenwas mit der verpackzeit ????
+    public static  int CLTIME = 5; //vermutung irgenwas mit der verpackzeit ????
     public static  int PPTIME = 5; //vermutung irgenwas mit der verpackzeit ????
-    public static  int refreshtime = 500  ; // die Zeit bis zum n�chsten schritt in ms 10*1000 = 10 Sekunden
+    private static final int refreshtime = 1000  ; // die Zeit bis zum n�chsten schritt in ms 10*1000 = 10 Sekunden
     public static boolean TEST = false; //teststeuerung der vorgruppe
     
     
     private Warehouse whouse; // internes Handle f�r das Warenhaus
     private boolean simstatus; // interne anzeige f�r den Simulations (takte &sim) //true bei sim run
-    private HauptFrame_interface gui;
-    List<Item> items;
-    Set<Item> itemSet;  //damit die items die in Keiner bestellung vorkommen nicht angezeigt werden  
+    private final HauptFrame_interface gui;
+    private Set<Item> itemSet;  //damit die items die in Keiner bestellung vorkommen nicht angezeigt werden
     
     
 	/**
@@ -62,7 +61,7 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 	 * und Gui Instanzieren 
 	 * ende Init �bergang zum simulationsmodus
 	 */
-	public Simulation(){
+    private Simulation(){
 		simstatus=false; //stat ist falste bei sim //true zu testzwecken
 		//________________________________________start csv
 		
@@ -84,7 +83,7 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 		simulation_run(); //beginn des simulationsabschnittes
 	}
 	
-	public void readCSV(String pfad){
+	void readCSV(String pfad){
 		ReadCSV rcsv;
 		try {
 			rcsv = new ReadCSV(pfad);		
@@ -92,13 +91,13 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 			//rcsv.writeItems();
 			
 			// CSV datei mit den Items wird hier eingelesen 
-			this.items = rcsv.readItems();
+            List<Item> items = rcsv.readItems();
 
 			whouse = new WarehouseImpl(items); // Warehouse mit Item Liste
 													// befuellen
 
 			//Order holen , tmp beinhaltet die Aufträge
-			List<Order> tmp = new ArrayList<Order>();
+			List<Order> tmp = new ArrayList<>();
 			tmp = rcsv.readOrder(items);
 			System.out.println("Gesamte Anzahl an gueltigen Auftraegen: " + tmp.size());
 			
@@ -107,9 +106,9 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 			for (int i = 0; i < 1 ; i++) {	//pauschale erz�ugung ungenau			
 				// Liste mit den Items wird �bergeben...
 			//do{//while(!rcsv.readOrder(item).isEmpty()){
-				for(int j = 0;j<tmp.size();j++){
-					whouse.takeOrder(tmp.get(j));
-				}
+                for (Order aTmp : tmp) {
+                    whouse.takeOrder(aTmp);
+                }
 				
 				
 				
@@ -185,30 +184,29 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 	 * @param Array der Boxingplants
 	 */
 	 private void updateDisplay(BoxingPlant[] temp){
-	     for(int i = 0; i < temp.length ; i++){
-	         Robot rob = temp[i].getRobot();
-	         if (rob != null){
-	        	 int loadTime = temp[i].getTemp_CLTIME_cnt();
-	        	 int packingTime = temp[i].getPackingTime();
-	        	 int dx = 0;
-	        	 int dy = 0;
+         for (BoxingPlant aTemp : temp) {
+             Robot rob = aTemp.getRobot();
+             if (rob != null) {
+                 int loadTime = aTemp.getLoadTime();
+                 int packingTime = aTemp.getPackingTime();
+                 int dx = 0;
+                 int dy = 0;
 //	        	 int id = rob.id();
 //	        	 int curentx = rob.getCurrentPosX();
 //	        	 int curenty = rob.getCurrentPosY();
-	        	 int[] dest = rob.getTarget();
-	        	 if(rob.getOrder() != null) if (rob.getOrder().getMap().isEmpty() !=true){
-	        		 dx = dest[1];
-	        		 dy = dest[0];
-	        	 }
-	        	 else {
-	        		dx = rob.getStartPosX(); 
-	        		dy = rob.getStartPosY(); 
-	        	 }
-	        	 gui.showRobotState(whouse, rob, itemSet, loadTime, dx,dy, packingTime );   	
-	        	 
-	        	 //gui.showRobotState(id, curentx, curenty, null, dx, dy, rob.getStatus(), itemSet, loadTime);
-	         	}
-	     }
+                 int[] dest = rob.getTarget();
+                 if (rob.getOrder() != null) if (!rob.getOrder().getMap().isEmpty()) {
+                     dx = dest[1];
+                     dy = dest[0];
+                 } else {
+                     dx = rob.getStartPosX();
+                     dy = rob.getStartPosY();
+                 }
+                 gui.showRobotState(whouse, rob, itemSet, loadTime, dx, dy, packingTime);
+
+                 //gui.showRobotState(id, curentx, curenty, null, dx, dy, rob.getStatus(), itemSet, loadTime);
+             }
+         }
 	 }
 	
 	public void starteSimulation(){

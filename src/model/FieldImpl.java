@@ -5,7 +5,6 @@ public class FieldImpl implements Field {
     private Robot robot;
     private final int coordinateX;
     private final int coordinateY;
-    private Item item;
     private int id;
 
     /**
@@ -34,8 +33,6 @@ public class FieldImpl implements Field {
 
       coordinateX = item.productPosX();
       coordinateY = item.productPosY();
-
-      this.item = item;
   }
 
     public int hasRobots() {
@@ -43,8 +40,7 @@ public class FieldImpl implements Field {
     }
 
     public boolean isBoxingPlant() {
-        if(this.id == 0) return false;
-        else return true;
+        return this.id != 0;
     }
 
     public void reg(Robot bot) {

@@ -6,26 +6,22 @@ import java.util.*;
 import model.*;
 
 public class ReadCSV {
-	private File configFile;
-	private File itemsFile;
-	private String delimiter;
-	private List<Item> itemList;
-	private ArrayList<String> liste;
-	private File orderFile;
-	private ArrayList orderArr;
-	private Set<Item> itemSet = new TreeSet<Item>();
+    private String delimiter;
+    private final ArrayList<String> liste;
+    private ArrayList orderArr;
+	private final Set<Item> itemSet = new TreeSet<>();
 	private String zeile = null;
 	private int counter = 0;
 
 	// Konstruktor
 	// bekommt als parameter den pfad der ini datei als string übergeben.
-	public ReadCSV(String inipfad) throws FileNotFoundException, IOException {
+	public ReadCSV(String inipfad) throws IOException {
 		// liste initialisieren
-		liste = new ArrayList<String>();
+		liste = new ArrayList<>();
 		// ini datei einlesen und die einzelnen pfade speichern,.
 		try (BufferedReader bReader = new BufferedReader(
 				new FileReader(inipfad))) {
-			String line = null;
+			String line;
 			while ((line = bReader.readLine()) != null) {
 				liste.add(line);
 			}
@@ -33,7 +29,7 @@ public class ReadCSV {
 		}
 
 		// orderpfad hollen und in einem bufferedReader speichern.
-		orderFile = new File(liste.get(2).split("=")[1].trim());
+        File orderFile = new File(liste.get(2).split("=")[1].trim());
 		BufferedReader tmpFile = new BufferedReader(new FileReader(orderFile));
 
 		orderArr = new ArrayList<String>();
@@ -49,10 +45,10 @@ public class ReadCSV {
 	}
 
 	// config.csv laden und die Variablen initialisieren
-	public void readConfig() throws FileNotFoundException, IOException {
+	public void readConfig() throws IOException {
 		/* liste inhalt zugehörigen variable zuweisen */
 		// pfade von config und Delimeter wird gespeichert
-		this.configFile = new File(liste.get(0).split("=")[1].trim());
+        File configFile = new File(liste.get(0).split("=")[1].trim());
 		this.delimiter = liste.get(3).split(" ")[2].trim();
 
 		BufferedReader tmpFile = new BufferedReader(new FileReader(configFile));
@@ -85,7 +81,7 @@ public class ReadCSV {
 
 		// Schreibt die items in die csv datei
 		try (PrintWriter erzeugteDatei = new PrintWriter(new BufferedWriter(
-				new FileWriter(outfile)));) {
+				new FileWriter(outfile)))) {
 			erzeugteDatei.println("item_id" + ";" + "productPosX" + ";"
 					+ "productPosY" + ";" + "productSize");
 
@@ -111,13 +107,13 @@ public class ReadCSV {
 	// Item liste einlesen
 	public List<Item> readItems() throws IOException {
 
-		itemList = new ArrayList<Item>();
+        List<Item> itemList = new ArrayList<>();
 		// items.csv pfad speichern
-		itemsFile = new File(liste.get(1).split("=")[1].trim());
+        File itemsFile = new File(liste.get(1).split("=")[1].trim());
 
 		BufferedReader tmpFile = new BufferedReader(new FileReader(itemsFile));
 
-		String zeile = null;
+		String zeile;
 
 		// header überspringen
 		tmpFile.readLine();
@@ -148,57 +144,40 @@ public class ReadCSV {
 
 	// Order einlesen
 	public List<Order> readOrder(List<Item> item) {
-
-		int tmpId = 0;
-		int menge = 0;
-
-		Map<Item, Integer> retMap = new TreeMap<Item, Integer>();
-
-		// flag zum setzten ob order fertig oder nicht
-		boolean orderComplete = false;
-
-		Item tempItem = null;
-		// den maximal gewicht in einer tmp variable speichern (kapazität)
-		int currentMaxSize = Simulation.ORDERMAXSIZE;
-		int countSameItem; // zählt wie oft das selbe item beladen werden muss.
-		int gw = 0; // gewicht wird hier addiert und darf nicht über kapazität
-					// sein
-//		String tmp1;
-//		String tmp2;
 		
 		//Diese Liste beinhaltet Listenpaare von den ids und Mengen der items
 		//index 0 und 1 zusammen,Index 2 und 3 zusammen ... etc. pp.
-		List<List<Integer>> listpairs = new ArrayList<List<Integer>>();
+		List<List<Integer>> listpairs = new ArrayList<>();
 		//Jonas und philipp reworked start
-		for(int i = 0;i<orderArr.size();i++){
-			List<Integer> tmpids = new ArrayList<Integer>();
-			List<Integer> mengen = new ArrayList<Integer>();
-			zeile = (String) orderArr.get(i);
-			
-			String ids = (zeile.split(";")[0]);
-			String mengenstrings = (zeile.split(";")[1]);
-			
-			for(int j = 0;j<ids.split(",").length;j++){
-				tmpids.add(Integer.parseInt(ids.split(",")[j]));
-			}
-			
-			for(int k = 0;k<mengenstrings.split(",").length;k++){
-				mengen.add(Integer.parseInt(mengenstrings.split(",")[k]));
-			}
-			listpairs.add(tmpids);
-			listpairs.add(mengen);
-			
-			
-		}
+        for (Object anOrderArr : orderArr) {
+            List<Integer> tmpids = new ArrayList<>();
+            List<Integer> mengen = new ArrayList<>();
+            zeile = (String) anOrderArr;
+
+            String ids = (zeile.split(";")[0]);
+            String mengenstrings = (zeile.split(";")[1]);
+
+            for (int j = 0; j < ids.split(",").length; j++) {
+                tmpids.add(Integer.parseInt(ids.split(",")[j]));
+            }
+
+            for (int k = 0; k < mengenstrings.split(",").length; k++) {
+                mengen.add(Integer.parseInt(mengenstrings.split(",")[k]));
+            }
+            listpairs.add(tmpids);
+            listpairs.add(mengen);
+
+
+        }
 		
 		for(int i = 0;i<listpairs.size();i++){
 			int gewichtgesamt = 0;
 			for(int j = 0;j<listpairs.get(i).size();j++){
-				for(int k = 0;k<item.size();k++){
-					if(item.get(k).id() == listpairs.get(i).get(j)){
-						gewichtgesamt += item.get(k).size() * listpairs.get(i+1).get(j);
-					}
-				}
+                for (Item anItem : item) {
+                    if (anItem.id() == listpairs.get(i).get(j)) {
+                        gewichtgesamt += anItem.size() * listpairs.get(i + 1).get(j);
+                    }
+                }
 		
 			
 		}
@@ -224,11 +203,11 @@ public class ReadCSV {
 		//Alle relevanten Items dem ItemSet hinzufügen,diese sind später auf dem Field sichtbar
 		for(int i = 0;i<listpairs.size();i=i+2){
 			for(int j = 0;j<listpairs.get(i).size();j++){
-				for(int k = 0;k<item.size();k++){
-				if(listpairs.get(i).get(j) == item.get(k).id()) {
-					itemSet.add(item.get(k));
-				}
-				}
+                for (Item anItem : item) {
+                    if (listpairs.get(i).get(j) == anItem.id()) {
+                        itemSet.add(anItem);
+                    }
+                }
 			}
 		}
 		
@@ -343,24 +322,24 @@ public class ReadCSV {
 //		}
 		//retMap.clear();
 		//Edited by j and p
-		List<TreeMap<Item,Integer>> retmap = new ArrayList<TreeMap<Item,Integer>>();
+		List<TreeMap<Item,Integer>> retmap = new ArrayList<>();
 		for(int i = 0;i<listpairs.size();i=i+2){
-			TreeMap<Item,Integer> tmp = new TreeMap<Item,Integer>();
+			TreeMap<Item,Integer> tmp = new TreeMap<>();
 			for(int j = 0;j<listpairs.get(i).size();j++){
-				for(int k = 0;k<item.size();k++){
-					if(item.get(k).id() == listpairs.get(i).get(j)){
-						tmp.put(item.get(k), listpairs.get(i+1).get(j));
-					}
-			}
+                for (Item anItem : item) {
+                    if (anItem.id() == listpairs.get(i).get(j)) {
+                        tmp.put(anItem, listpairs.get(i + 1).get(j));
+                    }
+                }
 		}
 			retmap.add(tmp);
 		}
 	
-		List<Order> orderList = new ArrayList<Order>();
-		
-		for(int i = 0;i<retmap.size();i++){
-			orderList.add(new Order(retmap.get(i)));
-		}
+		List<Order> orderList = new ArrayList<>();
+
+        for (TreeMap<Item, Integer> aRetmap : retmap) {
+            orderList.add(new Order(aRetmap));
+        }
 		
 		return orderList;
 	}
