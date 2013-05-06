@@ -21,10 +21,12 @@ public class textFenster extends JFrame implements textFenster_interface  {
     JPanel hauptpane;
     JPanel gridPane;
     JPanel StatusPane;
+    JPanel robotPane;
     //JTable table;
     //JScrollPane scrollPane;
     JPanel ueberschriftPane;
     JTextArea pendingOrders;
+    JScrollPane scrollpane;
 
     private Dimension screen = new Dimension((int) ((Toolkit
                     .getDefaultToolkit().getScreenSize().width) * 0.75),
@@ -36,22 +38,25 @@ public class textFenster extends JFrame implements textFenster_interface  {
         setTitle("Robot Uebersicht");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(700, 200);
-        setMinimumSize(new Dimension(600, 300));
+        setMinimumSize(new Dimension(500, 300));
         setMaximumSize(screen);
 
         hauptpane = new JPanel();
         getContentPane().add(hauptpane);
-        hauptpane.setLayout(new BorderLayout(0, 0));
-
+        hauptpane.setLayout(new GridLayout(2,1));
+        robotPane = new JPanel();
+        robotPane.setLayout(new BorderLayout(0,0));
+        hauptpane.add(robotPane);
         ueberschriftPane = new JPanel();
         ueberschriftPane.setLayout(new GridLayout(1, 6));
-        hauptpane.add(ueberschriftPane, BorderLayout.NORTH);
+        robotPane.add(ueberschriftPane, BorderLayout.NORTH);
 
         gridPane = new JPanel();
-        gridPane.setLayout(new GridLayout(robots, 6));
-        hauptpane.add(gridPane, BorderLayout.CENTER);
+        gridPane.setLayout(new GridLayout(robots,6));
+        robotPane.add(gridPane, BorderLayout.CENTER);
 
         StatusPane = new JPanel();
+        
 
         ueberschriftPane.add(new JLabel("Robot:"));
         ueberschriftPane.add(new JLabel("Position:"));
@@ -78,12 +83,13 @@ public class textFenster extends JFrame implements textFenster_interface  {
             gridPane.add(zeile[y][5]);	
 
             }
-        pendingOrders = new JTextArea("OrderId   ItemId   Gewicht   Menge   Robot\n",10,50);
+        pendingOrders = new JTextArea("OrderId   ItemId   Gewicht   Menge   Robot\n",10,68);
         pendingOrders.setForeground(Color.BLUE);
         pendingOrders.setFont(new Font(Font.MONOSPACED, 0, 12));
         StatusPane.add(pendingOrders);
         StatusPane.setLayout(new FlowLayout());
-        hauptpane.add(StatusPane, BorderLayout.SOUTH );
+        scrollpane = new JScrollPane(StatusPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        hauptpane.add(scrollpane);
         //hauptpane.add(scrollPane, BorderLayout.SOUTH);
         //pack();
         setVisible(true);
