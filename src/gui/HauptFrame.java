@@ -198,11 +198,10 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
 
 
     /* Aktualisiert Warenhaus ansicht */
-    //  public void showRobotState(final int robotName, final int xPos, final int yPos,
-    //  Item[] ladung, final int xZiel, final int yZiel, final Status status, final Set<Item> item, final int loadTime) {
     public void showRobotState( final Warehouse whouse, final Robot rob, final Set<Item> item, 
             final int loadTime, final int xZiel, final int yZiel, final int packingTime ) {
-        String output = new String();
+       
+    	String output = new String();
         output = "OrderId   ItemId   Gewicht   Menge   Robot\n";
         //�bersicht aktualisieren
         if (!whouse.getOrder().isEmpty()) {
@@ -241,54 +240,70 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
                     "","","",  output);
 
         }
+        
         for (Item elem : item) {
             feld[elem.productPosX()][elem.productPosY()].setText(String.valueOf(elem.id()));
         }
+        feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setText("");
+        feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setForeground(Color.BLACK);
+
+
+        // Ziel? --> verpacken Bildchen
+        if (rob.getCurrentPosX() == xZiel && rob.getCurrentPosY() == yZiel && yZiel != fields-1) {
+            feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id() + ":" + loadTime );
+            feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
+        }else if(rob.getCurrentPosX() == rob.getStartPosX() && rob.getCurrentPosY() == rob.getStartPosY() ) {
+        	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
+        	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id() + ":" + packingTime );
+        }else{
+        	// Neue Position eintragen
+        	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id());
+        	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
+        }
+        RobotPosX[rob.id()] = rob.getCurrentPosX();
+        RobotPosY[rob.id()] = rob.getCurrentPosY(); 
         
         // Anzeige aktualisieren
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                // Alte Position l�schen
-                if (RobotPosY[rob.id()] != fields-1) {
-                    feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setIcon(null);
-                }
+            	
                 feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setText("");
                 feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setForeground(Color.BLACK);
 
 
                 // Ziel? --> verpacken Bildchen
                 if (rob.getCurrentPosX() == xZiel && rob.getCurrentPosY() == yZiel && yZiel != fields-1) {
-                    feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setText("");
                     feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id() + ":" + loadTime );
-                }else if(rob.getCurrentPosX() == rob.getStartPosX() && rob.getCurrentPosY() == rob.getStartPosY() )
-        {
-            feld[RobotPosX[rob.id()]][RobotPosY[rob.id()]].setText("");
-            feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id() + ":" + packingTime );
-        }else{
-            // Neue Position eintragen
-            feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id());
-        }
+                    feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
+                }else if(rob.getCurrentPosX() == rob.getStartPosX() && rob.getCurrentPosY() == rob.getStartPosY() ) {
+                	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
+                	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id() + ":" + packingTime );
+                }else{
+                	// Neue Position eintragen
+                	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setText("R" + rob.id());
+                	feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
+                }
 
-        switch (rob.getStatus()) {
-            case IDLE:
-                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
-                break;
-            case BUSY:
-                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.YELLOW);
-                break;
-            case BOXING:
-                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.BLUE);
-                break;
-            case MOVING:
-                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.WHITE);
-                break;
-            case LOADING:
-                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.RED);
-                break;
-            default:
-                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.PINK);
-                break;
-        }
+//        switch (rob.getStatus()) {
+//            case IDLE:
+//                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.GREEN);
+//                break;
+//            case BUSY:
+//                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.YELLOW);
+//                break;
+//            case BOXING:
+//                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.BLUE);
+//                break;
+//            case MOVING:
+//                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.WHITE);
+//                break;
+//            case LOADING:
+//                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.RED);
+//                break;
+//            default:
+//                feld[rob.getCurrentPosX()][rob.getCurrentPosY()].setForeground(Color.PINK);
+//                break;
+//        }
 
 
         // Position zum sp�teren l�lschen zwischenspeichern
@@ -297,9 +312,7 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
 
             }
         });
-        
-        //pack();
-
+      
     }
 
     /* Zeigt Fehlermeldung bei Fehlverhalten */
