@@ -108,41 +108,6 @@ public class RobotImpl implements Robot {
  
     }
 
-    /**
-     * Alternative bewegungs möglichkeit für einen Robot
-     * @param y
-     * @param x
-     * @return
-     */
-    private char findWayAlternative(int y, int x){
-        if(currentPosY == y && currentPosX == x){
-            return 'A';
-        }else if(currentPosY == field.length - 1 && fieldFree(currentPosY - 1, currentPosX)){
-            return 'N';
-        }else if(currentPosX == x && currentPosY == field.length - 2 && y > currentPosY && fieldFree(currentPosY + 1, currentPosX)){
-            return 'S';
-        }else if(currentPosY == field.length - 2 && fieldFree(currentPosY, currentPosX - 1)){
-            return 'W';
-        }else if(currentPosX == 0 && currentPosY > y && fieldFree(currentPosY - 1, currentPosX)){
-            return 'N';
-        }else if(currentPosX == field[0].length - 1 && fieldFree(currentPosY + 1, currentPosX)){
-            return 'S';
-        }else if(currentPosX % 2 == 0 && fieldFree(currentPosY - 1, currentPosX) && currentPosY > y && currentPosY < field.length - 2 && currentPosX != field[0].length - 1){
-            return 'N';
-        }else if(currentPosX % 2 == 1 && fieldFree(currentPosY  + 1,currentPosX) && currentPosY < y && currentPosY < field.length - 3){
-            return 'S';
-        }else if(fieldFree(currentPosY, currentPosX + 1) && currentPosY < field.length - 2
-                && ((y < currentPosY && ((x % 2 == 0 && currentPosX != x) || (x % 2 == 1 && currentPosX != x - 1)))
-                || (y > currentPosY && ((x % 2 == 1 && currentPosX != x) || (x % 2 == 0 && currentPosX != x - 1)))
-                || currentPosY == y 
-                || (y >= field.length - 2 && currentPosY < field.length - 2))){
-            return 'E';
-        }else if(currentPosY == field.length - 2 && currentPosX == 0 && fieldFree(currentPosY - 1,currentPosX)){
-            return 'N';
-        }
-        return 0;
-    }
-    
     
     /**
      * Findet die Richtung, in die sich der Robot auf dem Weg zum Item bewegt

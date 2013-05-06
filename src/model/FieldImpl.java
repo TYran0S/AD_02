@@ -16,7 +16,6 @@ public class FieldImpl implements Field {
      */
     public FieldImpl(int amountOfRobots, int robotId, int coordinateX, int coordinateY) {
         this.amountOfRobots = amountOfRobots;
-        // this.robotId = robotId;
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
     }

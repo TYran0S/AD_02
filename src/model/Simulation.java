@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 
 
 /**
@@ -45,7 +44,7 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
     public static  int NUMROBOTS = NUMBOXINGPLANTS; //Anzahl der robotter
     public static  int CLTIME = 5; //vermutung irgenwas mit der verpackzeit ????
     public static  int PPTIME = 5; //vermutung irgenwas mit der verpackzeit ????
-    private static final int refreshtime = 1000  ; // die Zeit bis zum n�chsten schritt in ms 10*1000 = 10 Sekunden
+    private static final int refreshtime = 500  ; // die Zeit bis zum n�chsten schritt in ms 10*1000 = 10 Sekunden
     public static boolean TEST = false; //teststeuerung der vorgruppe
     
     
@@ -68,18 +67,6 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 		readCSV("CSV/info.ini");
 		gui = new HauptFrame(this);
 		gui.newWarehouse(N, NUMBOXINGPLANTS, NUMROBOTS, itemSet);
-       
-		// // Manuelle Order bsp
-		// Order order1 = new Order();
-		// order1.addItem(new Item(0, 0, 1, 1), 3);
-		// order1.addItem(new Item(0, 1, 1, 6), 3);
-		// order1.addItem(new Item(0, 2, 1, 11), 3);
-		// wh.takeOrder(order1.getMap());
-        
-        
-		//gui init		
-		//---------------------------------------------------
-        
 		simulation_run(); //beginn des simulationsabschnittes
 	}
 	
@@ -88,7 +75,6 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 		try {
 			rcsv = new ReadCSV(pfad);		
 			rcsv.readConfig();			
-			//rcsv.writeItems();
 			
 			// CSV datei mit den Items wird hier eingelesen 
             List<Item> items = rcsv.readItems();
@@ -103,16 +89,14 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 			
 			// i Order mit Item Liste generieren lassen und an das Warehouse uebergeben
 			//Schleife geht solange i kleiner Auftragszahl plus 1
-			for (int i = 0; i < 1 ; i++) {	//pauschale erz�ugung ungenau			
-				// Liste mit den Items wird �bergeben...
-			//do{//while(!rcsv.readOrder(item).isEmpty()){
+			for (int i = 0; i < 1 ; i++) {		
                 for (Order aTmp : tmp) {
                     whouse.takeOrder(aTmp);
                 }
 				
 				
 				
-			}//while(!rcsv.readOrder(item).isEmpty());
+			}
 			
 			
 			
@@ -162,15 +146,6 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
 			}
 			
 			whouse.action();//f�hre aktion (stepp / schritt) aus
-			//System.out.println(takt);
-			
-			//Informationen f�r das extra GUI Fenster holen
-			//erstelleTabelle(whouse.getBplants());
-			
-			//System.out.println(whouse.toString());
-			//sende neue Daten an die Gui etwa so...
-			//Field[][] temp = whouse.getWarehouseArr();
-			//updateGUI(temp);
 			updateDisplay(whouse.getBplants());			
 			
 			takt++;
@@ -191,9 +166,6 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
                  int packingTime = aTemp.getPackingTime();
                  int dx = 0;
                  int dy = 0;
-//	        	 int id = rob.id();
-//	        	 int curentx = rob.getCurrentPosX();
-//	        	 int curenty = rob.getCurrentPosY();
                  int[] dest = rob.getTarget();
                  if (rob.getOrder() != null) if (!rob.getOrder().getMap().isEmpty()) {
                      dx = dest[1];
@@ -203,8 +175,6 @@ public class Simulation  implements Control { //in fassung 1.0 extends Simulatio
                      dy = rob.getStartPosY();
                  }
                  gui.showRobotState(whouse, rob, itemSet, loadTime, dx, dy, packingTime);
-
-                 //gui.showRobotState(id, curentx, curenty, null, dx, dy, rob.getStatus(), itemSet, loadTime);
              }
          }
 	 }

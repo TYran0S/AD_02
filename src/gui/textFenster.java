@@ -84,8 +84,6 @@ public class textFenster extends JFrame implements textFenster_interface  {
         statusPane.setLayout(new FlowLayout());
         scrollpane = new JScrollPane(statusPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         hauptpane.add(scrollpane);
-        //hauptpane.add(scrollPane, BorderLayout.SOUTH);
-        //pack();
         setVisible(true);
 
         }
