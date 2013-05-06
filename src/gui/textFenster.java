@@ -19,10 +19,10 @@ public class textFenster extends JFrame implements textFenster_interface  {
     private final JLabel[][] zeile;
     private final JPanel hauptpane;
     private final JPanel gridPane;
-    //JTable table;
-    //JScrollPane scrollPane;
+    private final JScrollPane scrollpane;
     private final JPanel ueberschriftPane;
     private final JTextArea pendingOrders;
+    private final JPanel robotPane;
 
     public textFenster(int robots) {
 
@@ -38,7 +38,7 @@ public class textFenster extends JFrame implements textFenster_interface  {
         hauptpane = new JPanel();
         getContentPane().add(hauptpane);
         hauptpane.setLayout(new GridLayout(2,1));
-        JPanel robotPane = new JPanel();
+        robotPane = new JPanel();
         robotPane.setLayout(new BorderLayout(0, 0));
         hauptpane.add(robotPane);
         ueberschriftPane = new JPanel();
@@ -82,7 +82,7 @@ public class textFenster extends JFrame implements textFenster_interface  {
         pendingOrders.setFont(new Font(Font.MONOSPACED, 0, 12));
         statusPane.add(pendingOrders);
         statusPane.setLayout(new FlowLayout());
-        JScrollPane scrollpane = new JScrollPane(statusPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollpane = new JScrollPane(statusPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         hauptpane.add(scrollpane);
         //hauptpane.add(scrollPane, BorderLayout.SOUTH);
         //pack();
@@ -117,8 +117,8 @@ public class textFenster extends JFrame implements textFenster_interface  {
 
         // Tabelle verwerfen und Endstatus anzeigen
         public void beendet(int takte, int summeAuftraege){
-            hauptpane.remove(gridPane);
-            hauptpane.remove(ueberschriftPane);
+            hauptpane.remove(robotPane);
+            hauptpane.remove(scrollpane);
             JLabel temp = new JLabel("Order abgearbeitet. Auftraege:" + summeAuftraege +" Takte:"+ takte);
             hauptpane.add(temp);
             pack();
@@ -126,8 +126,8 @@ public class textFenster extends JFrame implements textFenster_interface  {
         }
         // Fehlermeldung anzeigen
         public void abbruch(String fehlermeldung){
-            hauptpane.remove(gridPane);
-            hauptpane.remove(ueberschriftPane);
+            hauptpane.remove(robotPane);
+            hauptpane.remove(scrollpane);
             JLabel temp = new JLabel(fehlermeldung);
             hauptpane.add(temp);
             pack();

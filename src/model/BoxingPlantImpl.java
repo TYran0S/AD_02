@@ -19,7 +19,6 @@ public class BoxingPlantImpl implements BoxingPlant {
     private int loadtime = 0;
     private char lastAction;
     private final DecimalFormat df = new DecimalFormat("00");
-    private final Status status;
 
     public BoxingPlantImpl(int id, int x, int y, Robot bot) {
         assignedrobot = bot;
@@ -28,7 +27,6 @@ public class BoxingPlantImpl implements BoxingPlant {
         coordinateX = x;
         coordinateY = y;
         ID = id;
-        this.status = Status.IDLE;
     }
 
     public void action() {
@@ -133,10 +131,6 @@ public class BoxingPlantImpl implements BoxingPlant {
         return assignedrobot;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-    
     public int getTemp_CLTIME_cnt()
     {
     	return this.temp_CLTIME_cnt;

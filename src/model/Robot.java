@@ -35,7 +35,6 @@ public interface Robot {
     public int getStartPosY();
     public int getCurrentPosX();
     public int getCurrentPosY();
-    public Status getStatus();
     public boolean isBusy();
     public int id();
     

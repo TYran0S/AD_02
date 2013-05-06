@@ -219,7 +219,6 @@ public class HauptFrame extends JFrame implements HauptFrame_interface {
         	{
         		feld[elem.productPosX()][elem.productPosY()].setText(String.valueOf(elem.id()));
         	}
-            
         }
 
         // Ziel? --> verpacken Bildchen

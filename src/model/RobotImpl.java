@@ -11,11 +11,9 @@ public class RobotImpl implements Robot {
     private int currentPosX;
     private int currentPosY;
     private boolean busy;
-    private final Status status;
     private final Field[][] field;
     private int blockCounter = 0;
     private int loadedTime;
-
     private int[] target;
 
     private Order order;
@@ -28,7 +26,6 @@ public class RobotImpl implements Robot {
         this.currentPosX = startPosX;
         this.currentPosY = startPosY;
         this.field = field;
-        this.status = Status.IDLE;
         busy = false;
     }
 
@@ -51,7 +48,6 @@ public class RobotImpl implements Robot {
             // Speichert in target das naechste Feld
             this.target = destination();
 
-            //asd
             direction = findWay(this.target[0], this.target[1]);
 
             // Bewegung zum naechsten Feld
@@ -163,12 +159,22 @@ public class RobotImpl implements Robot {
      */    
     private char findWay(int destinationY, int destinationX) {
         if (destinationX != currentPosX && fieldFree(currentPosY, currentPosX + Integer.compare(destinationX, currentPosX))) {
+            if(currentPosY + 1 < field.length &&  currentPosY + 1 < destinationY && field[currentPosY + 1][currentPosX].getTarget()[1] == destinationX
+                    && field[currentPosY + 1][currentPosX].getTarget()[0] < destinationY){
+                return 0;
+            }
+            
             if (destinationX < currentPosX) {
                 return 'W';
             } else if (destinationX > currentPosX) {
                 return 'E';
             }
         } else if (destinationY != currentPosY && fieldFree(currentPosY + Integer.compare(destinationY, currentPosY), currentPosX)) {
+            if(currentPosX + 1 < field[0].length &&  currentPosX + 1 < destinationX && field[currentPosY][currentPosX + 1].getTarget()[0] == destinationY
+                    && field[currentPosY][currentPosX + 1].getTarget()[1] < destinationX){
+                return 0;
+            }
+            
             if (destinationY < currentPosY) {
                 return 'N';
             } else if (destinationY > currentPosY) {
@@ -303,11 +309,6 @@ public class RobotImpl implements Robot {
     @Override
     public int getCurrentPosY() {
         return this.currentPosY;
-    }
-
-    @Override
-    public Status getStatus() {
-        return this.status;
     }
 
     public String getOrderInfos() {

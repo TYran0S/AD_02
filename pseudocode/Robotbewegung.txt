@@ -1,0 +1,41 @@
+findWay(ziel y,ziel x){
+	if(aktuelles X < ziel x && Feld rechts vom Robot ist frei){
+		if(Wenn der Robot unter den aktuellen Robot den gleichen X Wert als Ziel hat aber sein y Ziel über meinen liegt d.h die Wege kreuzen sich){
+			return warten
+		}
+		return gehe nach rechts
+	}else if(aktuelles x > ziel x && Feld links vom Robot ist frei){
+		if(Wenn der Robot unter den aktuellen Robot den gleichen X Wert als Ziel hat aber sein y Ziel über meinen liegt d.h die Wege kreuzen sich){
+			return warten
+		}
+		return gehe nach links
+	}else if(aktuelles y > ziel y && Feld über dem Robot ist frei){
+		if(Wenn der Robot rechts vom aktuellen Robot den gleichen y Wert als Ziel hat aber sein x Ziel über meinen liegt d.h die Wege kreuzen sich){
+			return warten
+		}
+		return gehe nach oben
+	}else if(aktuelles y < ziel y && Feld unter dem Robot ist frei){
+		if(Wenn der Robot rechts vom aktuellen Robot den gleichen y Wert als Ziel hat aber sein x Ziel über meinen liegt d.h die Wege kreuzen sich){
+			return warten
+		}
+		return gehe nach unten
+	}else if(aktuelles y == ziel y && aktuelles x == ziel x){
+		return ich bin da
+	}else if(alle wege die der Robot nehmen könnte ohne sich von seinen eigenen Ziel zu entfernen sind blockiert und die Ziele 
+		der Robots die ihn blockieren ist das Feld auf dem er steht){
+		return evade(); 
+	}
+	if(ich konnte mich 5 takte hintereinander nicht bewegen){
+		return evade();
+	}else{
+		return ich kann mich nicht bewegen
+	}
+}
+
+evade(ziel y, ziel x){
+	if(aktuelles x != ziel x)
+		Prüfe ob ein Feld neben ein Robot frei ist in der Reihenfolge Oben, Unten, Links und Rechts und gibt das erste Freie zurück
+	else{
+		Prüfe ob ein Feld neben ein Robot frei ist in der Reihenfolge Links, Rechts, Oben und Unten und gibt das erste Freie zurück
+	}
+}
